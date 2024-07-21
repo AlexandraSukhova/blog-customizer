@@ -178,7 +178,7 @@ export const defaultArticleState = {
 
 export type ArticleStateType = typeof defaultArticleState;
 
-export type appStateProprs = {
+export type AppStateProprs = {
 	fontFamilyOption: OptionType;
 	fontColor: OptionType;
 	contentWidth: OptionType;

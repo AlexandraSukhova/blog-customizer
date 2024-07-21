@@ -13,9 +13,7 @@ export type TArrowButton = {
 
 export const ArrowButton = ({onClose, isOpen}: TArrowButton) => {
 
-	const onClick = () => {
-		onClose(!isOpen);
-	}
+	const onClick = () => onClose(!isOpen);
 
 	return (
 		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */

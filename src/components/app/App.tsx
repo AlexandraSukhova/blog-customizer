@@ -1,21 +1,20 @@
 import { useState, CSSProperties } from "react";
-import { appStateProprs, defaultArticleState } from "src/constants/articleProps";
-import clsx from "clsx";
+import { AppStateProprs, defaultArticleState } from "src/constants/articleProps";
 import { Article } from "../article";
 import { ArticleParamsForm } from "../article-params-form";
 
 import styles from '../../styles/index.module.scss';
 
 export const App = () => {
-	const [appState, setAppState] = useState<appStateProprs>(defaultArticleState);
+	const [appState, setAppState] = useState<AppStateProprs>(defaultArticleState);
 
-	const onChange = (proprs: appStateProprs) => {
+	const onChange = (proprs: AppStateProprs) => {
 		setAppState(proprs)
 	}
 
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
 					'--font-family': appState.fontFamilyOption.value,

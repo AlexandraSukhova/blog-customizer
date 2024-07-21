@@ -9,21 +9,21 @@ import { OptionType } from 'src/constants/articleProps';
 
 import styles from './ArticleParamsForm.module.scss';
 import { Separator } from '../separator';
-import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 import { RadioGroup } from '../radio-group';
-import { appStateProprs } from 'src/constants/articleProps';
+import { AppStateProprs } from 'src/constants/articleProps';
 import clsx from 'clsx';
+import { useClose } from '../hooks/useClose';
 
 type TArticleParamsForm = {
-	FormStateOptions: appStateProprs;
-	onChange: (option: appStateProprs) => void;
+	FormStateOptions: AppStateProprs;
+	onChange: (option: AppStateProprs) => void;
 }
 
 export const ArticleParamsForm = (props: TArticleParamsForm) => {
 
 	const {onChange, FormStateOptions} = props;
-	const [FormIsOpen, setFormIsOpen] = useState<boolean>(false);
-	const [FormState, setFormState] = useState<appStateProprs>(FormStateOptions);
+	const [formIsOpen, setFormIsOpen] = useState<boolean>(false);
+	const [formState, setFormState] = useState<AppStateProprs>(FormStateOptions);
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const changeForm = (optionName: string) => {
@@ -37,10 +37,14 @@ export const ArticleParamsForm = (props: TArticleParamsForm) => {
 		setFormState(FormStateOptions);
 	}
 
+	const closeForm = () => {
+		handleClick(false)
+	}
+
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		onChange(FormState);
+		onChange(formState);
 	}
 
 	const handleReset = (e: FormEvent) => {
@@ -50,22 +54,22 @@ export const ArticleParamsForm = (props: TArticleParamsForm) => {
 		setFormState(defaultArticleState);
 	}
 
- 	useOutsideClickClose({isOpen: FormIsOpen, onChange: handleClick, rootRef})
+	useClose({isOpen: formIsOpen, onClose: closeForm, rootRef: rootRef})
 
 	return (
-		<div ref={rootRef}>
-			<ArrowButton onClose={handleClick} isOpen={FormIsOpen} />
-			<aside className={clsx(FormIsOpen && styles.container_open, styles.container)}>
-				<form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
+		<div ref={rootRef} >
+			<ArrowButton onClose={handleClick} isOpen={formIsOpen} />
+			<aside className={clsx(styles.container, formIsOpen && styles.container_open)}>
+				<form className={styles.form} onSubmit={handleSubmit} onReset={handleReset} style={{background: FormStateOptions.backgroundColor.value}}>
 				 <Text as='h2' size={31} weight={800} uppercase dynamicLite>
 				задайте параметры
 				</Text>
-				<Select selected={FormState.fontFamilyOption} options={fontFamilyOptions} title='шрифт' onChange={changeForm('fontFamilyOption')}/>
-				<RadioGroup selected={FormState.fontSizeOption} name={'fontSize'} options={fontSizeOptions} title={'Размер шрифта'} onChange={changeForm('fontSizeOption')}/>
-				<Select selected={FormState.fontColor} options={fontColors} title={'цвет шрифта'} onChange={changeForm('fontColor')}/>
+				<Select selected={formState.fontFamilyOption} options={fontFamilyOptions} title='шрифт' onChange={changeForm('fontFamilyOption')}/>
+				<RadioGroup selected={formState.fontSizeOption} name={'fontSize'} options={fontSizeOptions} title={'Размер шрифта'} onChange={changeForm('fontSizeOption')}/>
+				<Select selected={formState.fontColor} options={fontColors} title={'цвет шрифта'} onChange={changeForm('fontColor')}/>
 				<Separator />
-				<Select selected={FormState.backgroundColor} options={backgroundColors} title='цвет фона' onChange={changeForm('backgroundColor')}/>
-				<Select selected={FormState.contentWidth} options={contentWidthArr} title={'ширина контента'} onChange={changeForm('contentWidth')}/>
+				<Select selected={formState.backgroundColor} options={backgroundColors} title='цвет фона' onChange={changeForm('backgroundColor')}/>
+				<Select selected={formState.contentWidth} options={contentWidthArr} title={'ширина контента'} onChange={changeForm('contentWidth')}/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset'/>
 						<Button title='Применить' type='submit'/>
